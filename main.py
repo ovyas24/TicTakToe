@@ -1,9 +1,5 @@
 import itertools,random
-#with bot 
-'''
-    1.log every move and check for random move
-    2.make it smart if you can 
-'''
+
 def bot():
     return random.randint(0,2),random.randint(0,2)
 def win(current_game):
