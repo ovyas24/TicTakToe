@@ -11,7 +11,7 @@ def win(current_game):
     #horizontal
     for row in game:
         if all_same(row):
-            print(f"Player {row[0]} is the winner Horizontally")
+            print(f"\033[0;37;42mPlayer {row[0]} is the winner Horizontally")
             return True
 
     #vertical
@@ -20,7 +20,7 @@ def win(current_game):
         for row in game:
             check.append(row[col])
         if all_same(check):
-            print(f"Player {check[0]} is the winner Verically")
+            print(f"\033[0;37;42mPlayer {check[0]} is the winner Verically")
             return True
 
     #daigonal
@@ -28,19 +28,28 @@ def win(current_game):
     for ix in range(len(game)):
         daigs.append(game[ix][ix])
     if all_same(daigs):
-        print(f"Player {daigs[0]} is the winner Daigonally")
+        print(f"\033[0;37;42mPlayer {daigs[0]} is the winner Daigonally")
         return True
     daigs=[]       
     for r,c in enumerate(reversed(range(len(game)))):
         daigs.append(game[r][c])
     if all_same(daigs):
-        print(f"Player {daigs[0]} is the winner Daigonally")
+        print(f"\033[0;37;42mPlayer {daigs[0]} is the winner Daigonally")
+        return True
+    #tai cheker
+    n=[] 
+    for i in game:
+        for j in i:
+            n.append(j) 
+    if n.count(0)==0:
+        print("\033[0;37;42mIts a tai")
         return True
 
 def board(game,player=0,row=0,col=0,dis=False):
     try:
         if game[row][col] != 0:
-            print("\033[1;31;40mthis position is occupied Choose Another!")
+            if player==1:
+                print("\033[1;31;40mthis position is occupied Choose Another!")
             return game,False
         print("\033[1;37;40m   0  1  2")
         if not dis:
@@ -50,7 +59,7 @@ def board(game,player=0,row=0,col=0,dis=False):
         return game,True
     except IndexError as e:
         print("Error: Make sure you input row/column as 0,1 or 2?",e,"You Piece of shit you did it i know!!")
-        return False
+        return game,False
     except Exception as e:
         print("Somthing Went Very Wrong!! ",e)
         return game,False
@@ -64,18 +73,21 @@ while play:
     game_won=False
     game,_ = board(game,dis=True)
     while not game_won:
+        breaker=0
         current_player = next(players)
         print(f"current player {current_player}")
         played = False
         while not played:
+
             if current_player==1:
                 row_choice = int(input("\033[1;37;40mWhat row  do you wnat to play: "))
                 column_choice = int(input("What column do you wnat to play:"))
             else:
 
-                row_choice,column_choice = bot()
-                 
+                row_choice,column_choice = bot()  
             game,played = board(game,current_player,row_choice,column_choice)
+            
             if played:
                 print(f"\033[1;32;40mplayer {current_player} played {row_choice},{column_choice}\033[1;37;40m")
             game_won=win(game)
+            
